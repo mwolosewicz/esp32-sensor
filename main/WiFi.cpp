@@ -81,6 +81,8 @@ void wifi_init_sta(const char *aSSID, const char *aPass)
                                                         &instance_got_ip));
 
     wifi_config_t wifi_config;
+    memset(&wifi_config,0, sizeof(wifi_config));
+
     strcpy((char *)wifi_config.sta.ssid,(char *)aSSID);
     strcpy((char *)wifi_config.sta.password,(char *)aPass);
     wifi_config.sta.threshold.authmode = WIFI_AUTH_WPA2_PSK;
@@ -106,11 +108,11 @@ void wifi_init_sta(const char *aSSID, const char *aPass)
      * happened. */
     if (bits & WIFI_CONNECTED_BIT) {
         ESP_LOGI(TAG, "connected to ap SSID:%s password:%s",
-                 aSSID, aPass);
+                 wifi_config.sta.ssid, wifi_config.sta.password);
         mIsConnected = true;
     } else if (bits & WIFI_FAIL_BIT) {
         ESP_LOGI(TAG, "Failed to connect to SSID:%s, password:%s",
-                 aSSID, aPass);
+                 wifi_config.sta.ssid, wifi_config.sta.password);
         mIsConnected = false;
     } else {
         ESP_LOGE(TAG, "UNEXPECTED EVENT");
